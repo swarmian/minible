@@ -47,8 +47,10 @@ enum
   USB_STR_PRODUCT,
   USB_STR_RAW_INTERFACE,
   USB_STR_KEYB_INTERFACE,
+  USB_STR_CTAP_INTERFACE,
   USB_STR_COUNT,
 };
+
 
 /*- Types -------------------------------------------------------------------*/
 #pragma GCC diagnostic push
@@ -75,6 +77,10 @@ typedef struct PACK
   usb_interface_descriptor_t      keyb_interface;
   usb_hid_descriptor_t            keyb_hid;
   usb_endpoint_descriptor_t       keyb_ep_in;
+  usb_interface_descriptor_t      ctap_interface;
+  usb_hid_descriptor_t            ctap_hid;
+  usb_endpoint_descriptor_t       ctap_ep_out;
+  usb_endpoint_descriptor_t       ctap_ep_in;
 } usb_configuration_hierarchy_t;
 #pragma GCC diagnostic pop
 
@@ -82,6 +88,7 @@ typedef struct PACK
 extern usb_device_descriptor_t usb_device_descriptor;
 extern usb_configuration_hierarchy_t usb_configuration_hierarchy;
 extern uint8_t usb_hid_report_descriptor[28];
+extern uint8_t ctap_hid_report_descriptor[34];
 extern usb_string_descriptor_zero_t usb_string_descriptor_zero;
 extern const char *usb_strings[];
 extern uint8_t usb_string_descriptor_buffer[64];

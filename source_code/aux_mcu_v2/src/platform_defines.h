@@ -55,6 +55,11 @@ v0.4: discarding USB messages having the incorrect flip bit
 #define USB_KEYBOARD_INTERFACE      1                   // Interface for keyboard
 #define USB_KEYBOARD_ENDPOINT       3                   // Endpoint number for keyboard
 #define USB_KEYBOARD_SIZE           8                   // Endpoint size for keyboard
+#define USB_CTAPHID_INTERFACE       2                   // Interface for the CTAP HID
+#define USB_CTAPHID_RX_ENDPOINT     4                   // CTAP HID TX endpoint
+#define USB_CTAPHID_TX_ENDPOINT     5                   // CTAP HID RX endpoint
+#define USB_CTAPHID_TX_SIZE         64                  // CTAP HID transmit packet size
+#define USB_CTAPHID_RX_SIZE         64                  // CTAP HID receive packet size
 #define USB_WRITE_TIMEOUT   50                          // Timeout for writing in the pipe
 #define USB_READ_TIMEOUT 4                              // Timeout for reading in the pipe
 
