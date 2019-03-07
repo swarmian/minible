@@ -155,7 +155,7 @@ void usb_handle_standard_request(usb_request_t *request)
             //asm("Nop");
         }
     } break;
-
+    
     case USB_CMD(OUT, DEVICE, STANDARD, SET_CONFIGURATION):
     {
       usb_config = request->wValue;
@@ -274,8 +274,8 @@ void usb_handle_standard_request(usb_request_t *request)
       }
       else if (request->wIndex == USB_CTAPHID_INTERFACE)
       {
-          length = LIMIT(length, sizeof(ctap_hid_report_descriptor));
-          udc_control_send(ctap_hid_report_descriptor, length);
+          length = LIMIT(length, sizeof(usb_hid_ctap_report_descriptor));
+          udc_control_send(usb_hid_ctap_report_descriptor, length);
       }
       else
       {

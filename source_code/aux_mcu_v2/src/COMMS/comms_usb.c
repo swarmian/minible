@@ -11,10 +11,16 @@
 #include "defines.h"
 #include "usb.h"
 #include "dma.h"
+#include "ctaphid.h"
 
 /* USB comms buffers */
 static __attribute__((aligned(4))) hid_packet_t raw_hid_recv_buffer;
 static __attribute__((aligned(4))) hid_packet_t raw_hid_send_buffer;
+//static __attribute__((aligned(4))) hid_packet_t ctap_hid_recv_buffer;
+//static __attribute__((aligned(4))) hid_packet_t ctap_hid_send_buffer;
+
+uint8_t hidmsg[64];
+
 /* Future message to be sent to MCU */
 aux_mcu_message_t comms_usb_temp_mcu_message_to_send;
 /* Packet number we're expecting to receive */
@@ -29,6 +35,10 @@ BOOL comms_usb_expect_flip_bit_state_set = FALSE;
 volatile BOOL comms_usb_raw_hid_packet_received = FALSE;
 volatile BOOL comms_usb_raw_hid_packet_receive_length = 0;
 volatile BOOL comms_usb_raw_hid_packet_being_sent = FALSE;
+/* Set when we received/send a CTAP HID USB message */
+volatile BOOL comms_usb_ctap_hid_packet_received = FALSE;
+volatile BOOL comms_usb_ctap_hid_packet_receive_length = 0;
+volatile BOOL comms_usb_ctap_hid_packet_being_sent = FALSE;
 
 /* Debug vars */
 uint16_t dbg_mcu_hid_msg_sent = 0;
@@ -47,6 +57,19 @@ void comms_usb_raw_hid_recv_callback(uint16_t recv_bytes)
     comms_usb_raw_hid_packet_received = TRUE;
 }
 
+/*! \fn     comms_usb_ctap_hid_recv_callback(uint16_t recv_bytes)
+*   \brief  Function called when a CTAP HID packet is received
+*/
+void comms_usb_ctap_hid_recv_callback(uint16_t recv_bytes)
+{
+    /* Set number of received bytes */
+    comms_usb_ctap_hid_packet_receive_length = recv_bytes;
+    
+    /* Set flag */
+    comms_usb_ctap_hid_packet_received = TRUE;
+}
+
+
 /*! \fn     comms_usb_raw_hid_send_callback(void)
 *   \brief  Function called when a HID packet is sent
 */
@@ -56,6 +79,15 @@ void comms_usb_raw_hid_send_callback(void)
     comms_usb_raw_hid_packet_being_sent = FALSE;
 }
 
+/*! \fn     comms_usb_ctap_hid_send_callback(void)
+*   \brief  Function called when a CTAP HID packet is sent
+*/
+void comms_usb_ctap_hid_send_callback(void)
+{
+    /* Set flag */
+    comms_usb_ctap_hid_packet_being_sent = FALSE;
+}
+
 /*! \fn     comms_usb_arm_packet_receive(void)
 *   \brief  Arm packet receive
 */
@@ -63,6 +95,51 @@ void comms_usb_arm_packet_receive(void)
 {
     usb_recv(USB_RAWHID_TX_ENDPOINT, (uint8_t*)&raw_hid_recv_buffer, sizeof(raw_hid_recv_buffer));
 }
+
+/*! \fn     comms_usb_arm_ctap_packet_receive(void)
+*   \brief  Arm packet receive
+*/
+void comms_usb_arm_ctap_packet_receive(void)
+{
+    usb_recv(USB_CTAPHID_TX_ENDPOINT, hidmsg,64);//(uint8_t*)&ctap_hid_recv_buffer, sizeof(ctap_hid_recv_buffer));
+    ctaphid_handle_packet(hidmsg);
+}
+
+/*! \fn     comms_usb_send_raw_hid_packet(hid_packet_t* packet, BOOL wait_send, uint16_t payload_size)
+*   \brief  send raw hid packet
+*   \param  packet          Packet to send (must be 4 bytes aligned!)
+*   \param  wait_send       Set to wait for end of packet transmission
+*   \param  payload_size    Payload size
+*/
+void comms_usb_send_ctap_hid_packet(uint8_t* packet, BOOL wait_send, uint16_t payload_size)
+{
+    /* Wait for possible previous packet to be sent */
+    while(comms_usb_ctap_hid_packet_being_sent == TRUE);
+    
+    /* Reset flag */
+    comms_usb_ctap_hid_packet_being_sent = TRUE;
+    
+    /* Check payload size parameter */
+    if (payload_size > sizeof(hid_packet_t))
+    {
+        payload_size = sizeof(hid_packet_t);
+    }
+    
+    /* Send packet */
+    //packet[0] = 0xffffffff;
+    //packet[1] = 0xff;
+    //packet[2] = 0xff;
+    //packet[3] = 0xff;
+    usb_send(USB_CTAPHID_RX_ENDPOINT, (uint8_t*)packet, payload_size);
+    usb_send(USB_CTAPHID_RX_ENDPOINT, (uint8_t*)packet, payload_size);
+    
+    /* If asked, wait */
+    if (wait_send != FALSE)
+    {
+        while(comms_usb_ctap_hid_packet_being_sent == TRUE);
+    }    
+}
+
 
 /*! \fn     comms_usb_send_raw_hid_packet(hid_packet_t* packet, BOOL wait_send, uint16_t payload_size)
 *   \brief  send raw hid packet
@@ -163,6 +240,8 @@ void comms_usb_configuration_callback(int config)
     
     /* Start receiving raw HID packets */
     comms_usb_arm_packet_receive();
+    /* Start receiving ctap HID packets */
+    comms_usb_arm_ctap_packet_receive();
 } 
 
 /*! \fn     comms_usb_communication_routine(void)
@@ -170,7 +249,15 @@ void comms_usb_configuration_callback(int config)
 */
 void comms_usb_communication_routine(void)
 {
-    /* Did we receive a packet? */
+    /* Did we receive a ctap hid packet? */
+    if (comms_usb_ctap_hid_packet_received != FALSE)
+    {
+        /* Reset flag */
+        comms_usb_ctap_hid_packet_received = FALSE;
+        comms_usb_arm_ctap_packet_receive();
+        return;
+    }
+    /* Did we receive a raw hid packet? */
     if (comms_usb_raw_hid_packet_received != FALSE)
     {
         /* Reset flag */

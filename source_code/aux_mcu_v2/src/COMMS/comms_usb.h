@@ -38,6 +38,10 @@ void comms_usb_configuration_callback(int config);
 void comms_usb_raw_hid_send_callback(void);
 void comms_usb_communication_routine(void);
 void comms_usb_arm_packet_receive(void);
+void comms_usb_send_ctap_hid_packet(uint8_t* packet, BOOL wait_send, uint16_t payload_size);
+void comms_usb_ctap_hid_recv_callback(uint16_t recv_bytes);
+void comms_usb_ctap_hid_send_callback(void);
+void comms_usb_arm_ctap_packet_receive(void);
 
 
 #endif /* COMMS_USB_H_ */

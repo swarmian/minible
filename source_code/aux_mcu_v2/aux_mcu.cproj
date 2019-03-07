@@ -277,7 +277,7 @@
       </framework-data>
     </AsfFrameworkConfig>
     <avrtool>com.atmel.avrdbg.tool.atmelice</avrtool>
-    <avrtoolserialnumber>J41800080444</avrtoolserialnumber>
+    <avrtoolserialnumber>J41800116114</avrtoolserialnumber>
     <avrdeviceexpectedsignature>0x1001030A</avrdeviceexpectedsignature>
     <avrtoolinterface>SWD</avrtoolinterface>
     <com_atmel_avrdbg_tool_atmelice>
@@ -288,10 +288,23 @@
         <InterfaceName>SWD</InterfaceName>
       </ToolOptions>
       <ToolType>com.atmel.avrdbg.tool.atmelice</ToolType>
-      <ToolNumber>J41800080444</ToolNumber>
+      <ToolNumber>J41800116114</ToolNumber>
       <ToolName>Atmel-ICE</ToolName>
     </com_atmel_avrdbg_tool_atmelice>
     <avrtoolinterfaceclock>2000000</avrtoolinterfaceclock>
+    <custom>
+      <ToolOptions>
+        <InterfaceProperties>
+          <SwdClock>2000000</SwdClock>
+        </InterfaceProperties>
+        <InterfaceName>
+        </InterfaceName>
+      </ToolOptions>
+      <ToolType>custom</ToolType>
+      <ToolNumber>
+      </ToolNumber>
+      <ToolName>Custom Programming Tool</ToolName>
+    </custom>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -603,6 +616,11 @@
       <Value>../src/ASF/thirdparty/wireless/ble_sdk/utils</Value>
       <Value>../src/BLE</Value>
       <Value>../src/LOGIC</Value>
+      <Value>../src/CTAP</Value>
+      <Value>../src/CBOR</Value>
+      <Value>../src/CRYPTO</Value>
+      <Value>../src/CRYPTO/MICROECC</Value>
+      <Value>../src/CRYPTO/AES</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize (-O1)</armgcc.compiler.optimization.level>
@@ -834,10 +852,16 @@
     <Folder Include="src\ASF\thirdparty\wireless\ble_sdk\utils\" />
     <Folder Include="src\config\" />
     <Folder Include="src\CLOCKS" />
+    <Folder Include="src\CRYPTO\MICROECC" />
+    <Folder Include="src\CRYPTO\AES" />
+    <Folder Include="src\CRYPTO\SHA256" />
     <Folder Include="src\DMA" />
     <Folder Include="src\COMMS" />
     <Folder Include="src\BLE" />
     <Folder Include="src\LOGIC" />
+    <Folder Include="src\CTAP" />
+    <Folder Include="src\CBOR" />
+    <Folder Include="src\CRYPTO" />
     <Folder Include="src\USB" />
     <Folder Include="src\PLATFORM" />
     <Folder Include="src\TIMER" />
@@ -1015,6 +1039,54 @@
     <Compile Include="src\BLE\hid_keyboard_app.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\CBOR\cbor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborencoder.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborencoder_close_container_checked.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborerrorstrings.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborinternal_p.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborjson.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborparser.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborparser_dup_string.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborpretty.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborpretty_stdio.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cbortojson.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\cborvalidation.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\compilersupport_p.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\open_memstream.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\tinycbor-version.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CBOR\utf8_p.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\CLOCKS\driver_clocks.c">
       <SubType>compile</SubType>
     </Compile>
@@ -1051,6 +1123,18 @@
     <None Include="src\ASF\thirdparty\wireless\ble_sdk\lib\cm0p\gcc\libble_sdk.a">
       <SubType>compile</SubType>
     </None>
+    <None Include="src\CBOR\parsetags.pl">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CBOR\src.pri">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CBOR\tags.txt">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CBOR\tinycbor.pro">
+      <SubType>compile</SubType>
+    </None>
     <None Include="src\config\conf_extint.h">
       <SubType>compile</SubType>
     </None>
@@ -1063,6 +1147,84 @@
     <None Include="src\config\conf_timer.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\CRYPTO\AES\aes.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CRYPTO\AES\aes.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CRYPTO\MICROECC\types.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CRYPTO\MICROECC\uECC.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CRYPTO\MICROECC\uECC.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CRYPTO\MICROECC\uECC_vli.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CRYPTO\SHA256\sha256.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CRYPTO\SHA256\sha256.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\cose_key.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\crypto.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\crypto.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\ctaphid.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\ctaphid.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\ctap_errors.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\ctap_parse.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\ctap_parse.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\device.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\log.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\log.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\stubs.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\u2f.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\u2f.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\util.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\util.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\wallet.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\CTAP\wallet.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\defines.h">
       <SubType>compile</SubType>
     </Compile>
@@ -1615,6 +1777,27 @@
     <Compile Include="src\main.c">
       <SubType>compile</SubType>
     </Compile>
+    <None Include="src\CRYPTO\MICROECC\asm_arm.inc">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CRYPTO\MICROECC\asm_arm_mult_square.inc">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CRYPTO\MICROECC\asm_arm_mult_square_umaal.inc">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CRYPTO\MICROECC\asm_avr.inc">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CRYPTO\MICROECC\asm_avr_mult_square.inc">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CRYPTO\MICROECC\curve-specific.inc">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\CRYPTO\MICROECC\platform-specific.inc">
+      <SubType>compile</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

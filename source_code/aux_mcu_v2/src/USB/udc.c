@@ -354,7 +354,7 @@ void USB_Handler(void)
     USB->DEVICE.DeviceEndpoint[0].EPSTATUSCLR.bit.BK0RDY = 1;
     USB->DEVICE.DeviceEndpoint[0].EPINTENSET.bit.RXSTP = 1;
   }
-
+  
   if (USB->DEVICE.DeviceEndpoint[0].EPINTFLAG.bit.RXSTP)
   {
     USB->DEVICE.DeviceEndpoint[0].EPINTFLAG.reg = USB_DEVICE_EPINTFLAG_RXSTP;
@@ -362,7 +362,7 @@ void USB_Handler(void)
     usb_handle_standard_request((usb_request_t *)udc_ctrl_out_buf);
     USB->DEVICE.DeviceEndpoint[0].EPSTATUSCLR.bit.BK0RDY = 1;
   }
-
+  
   epint = USB->DEVICE.EPINTSMRY.reg;
 
   for (int i = 0; epint && i < USB_EPT_NUM; i++)
@@ -384,6 +384,10 @@ void USB_Handler(void)
           comms_usb_raw_hid_recv_callback(udc_mem[i].out.PCKSIZE.bit.BYTE_COUNT);
       }
       //udc_recv_callback(i, udc_mem[i].out.PCKSIZE.bit.BYTE_COUNT);
+      else if (i == USB_CTAPHID_TX_ENDPOINT)
+      {
+          comms_usb_ctap_hid_recv_callback(udc_mem[i].out.PCKSIZE.bit.BYTE_COUNT);  
+      }
     }
 
     if (flags & USB_DEVICE_EPINTFLAG_TRCPT1)
@@ -394,6 +398,10 @@ void USB_Handler(void)
       if (i == USB_RAWHID_RX_ENDPOINT)
       {
           comms_usb_raw_hid_send_callback();
+      }
+      else if (i == USB_CTAPHID_RX_ENDPOINT)
+      {
+          comms_usb_ctap_hid_send_callback();
       }
       //udc_send_callback(i);
     }

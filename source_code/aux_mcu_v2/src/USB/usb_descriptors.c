@@ -68,47 +68,47 @@ alignas(4) usb_configuration_hierarchy_t usb_configuration_hierarchy =
 
   .raw_interface =
   {
-    .bLength             = sizeof(usb_interface_descriptor_t),
-    .bDescriptorType     = USB_INTERFACE_DESCRIPTOR,
-    .bInterfaceNumber    = USB_RAWHID_INTERFACE,
-    .bAlternateSetting   = 0,
-    .bNumEndpoints       = 2,
-    .bInterfaceClass     = 0x03,
-    .bInterfaceSubClass  = 0x00,
-    .bInterfaceProtocol  = 0x00,
-    .iInterface          = USB_STR_RAW_INTERFACE,
+      .bLength             = sizeof(usb_interface_descriptor_t),
+      .bDescriptorType     = USB_INTERFACE_DESCRIPTOR,
+      .bInterfaceNumber    = USB_RAWHID_INTERFACE,
+      .bAlternateSetting   = 0,
+      .bNumEndpoints       = 2,
+      .bInterfaceClass     = 0x03,
+      .bInterfaceSubClass  = 0x00,
+      .bInterfaceProtocol  = 0x00,
+      .iInterface          = USB_STR_RAW_INTERFACE,
   },
 
   .raw_hid =
   {
-    .bLength             = sizeof(usb_hid_descriptor_t),
-    .bDescriptorType     = USB_HID_DESCRIPTOR,
-    .bcdHID              = 0x0111,
-    .bCountryCode        = 0,
-    .bNumDescriptors     = 1,
-    .bDescriptorType1    = USB_HID_REPORT_DESCRIPTOR,
-    .wDescriptorLength   = sizeof(usb_hid_report_descriptor),
+      .bLength             = sizeof(usb_hid_descriptor_t),
+      .bDescriptorType     = USB_HID_DESCRIPTOR,
+      .bcdHID              = 0x0111,
+      .bCountryCode        = 0,
+      .bNumDescriptors     = 1,
+      .bDescriptorType1    = USB_HID_REPORT_DESCRIPTOR,
+      .wDescriptorLength   = sizeof(usb_hid_report_descriptor),
   },
 
   .raw_ep_in =
   {
-    .bLength             = sizeof(usb_endpoint_descriptor_t),
-    .bDescriptorType     = USB_ENDPOINT_DESCRIPTOR,
-    .bEndpointAddress    = USB_IN_ENDPOINT | USB_RAWHID_RX_ENDPOINT,
-    .bmAttributes        = USB_INTERRUPT_ENDPOINT,
-    .wMaxPacketSize      = 64,
-    .bInterval           = 1,
+      .bLength             = sizeof(usb_endpoint_descriptor_t),
+      .bDescriptorType     = USB_ENDPOINT_DESCRIPTOR,
+      .bEndpointAddress    = USB_IN_ENDPOINT | USB_RAWHID_RX_ENDPOINT,
+      .bmAttributes        = USB_INTERRUPT_ENDPOINT,
+      .wMaxPacketSize      = 64,
+      .bInterval           = 1,
   },
 
   .raw_ep_out =
   {
-    .bLength             = sizeof(usb_endpoint_descriptor_t),
-    .bDescriptorType     = USB_ENDPOINT_DESCRIPTOR,
-    .bEndpointAddress    = USB_OUT_ENDPOINT | USB_RAWHID_TX_ENDPOINT,
-    .bmAttributes        = USB_INTERRUPT_ENDPOINT,
-    .wMaxPacketSize      = 64,
-    .bInterval           = 1,
-  },
+      .bLength             = sizeof(usb_endpoint_descriptor_t),
+      .bDescriptorType     = USB_ENDPOINT_DESCRIPTOR,
+      .bEndpointAddress    = USB_OUT_ENDPOINT | USB_RAWHID_TX_ENDPOINT,
+      .bmAttributes        = USB_INTERRUPT_ENDPOINT,
+      .wMaxPacketSize      = 64,
+      .bInterval           = 1,
+  },  
 
   .keyb_interface =
   {
@@ -143,7 +143,7 @@ alignas(4) usb_configuration_hierarchy_t usb_configuration_hierarchy =
     .wMaxPacketSize      = USB_KEYBOARD_SIZE,
     .bInterval           = 1,
   },
-  
+
   .ctap_interface =
   {
       .bLength             = sizeof(usb_interface_descriptor_t),
@@ -165,7 +165,7 @@ alignas(4) usb_configuration_hierarchy_t usb_configuration_hierarchy =
       .bCountryCode        = 0,
       .bNumDescriptors     = 1,
       .bDescriptorType1    = USB_HID_REPORT_DESCRIPTOR,
-      .wDescriptorLength   = sizeof(usb_hid_report_descriptor),
+      .wDescriptorLength   = sizeof(usb_hid_ctap_report_descriptor),
   },
 
   .ctap_ep_in =
@@ -187,6 +187,7 @@ alignas(4) usb_configuration_hierarchy_t usb_configuration_hierarchy =
       .wMaxPacketSize      = 64,
       .bInterval           = 1,
   },
+
 };
 
 alignas(4) uint8_t usb_hid_report_descriptor[28] =
@@ -242,7 +243,7 @@ alignas(4) uint8_t keyboard_hid_report_desc[63] =
     0xc0                                //   End Collection
 };
 
-alignas(4) uint8_t ctap_hid_report_descriptor[34] =
+alignas(4) uint8_t usb_hid_ctap_report_descriptor[34] =
 {
     0x06, 0xd0, 0xf1,                   //   USAGE_PAGE (FIDO Alliance)
     0x09, 0x01,                         //   USAGE (Keyboard)
@@ -262,11 +263,12 @@ alignas(4) uint8_t ctap_hid_report_descriptor[34] =
     0xc0,                               //   END_COLLECTION
 };
 
+
 alignas(4) usb_string_descriptor_zero_t usb_string_descriptor_zero =
 {
   .bLength               = sizeof(usb_string_descriptor_zero_t),
   .bDescriptorType       = USB_STRING_DESCRIPTOR,
-  .wLANGID               = 0x0409, // English (United States)
+  .wLANGID               = 0x0409,     // English (United States)
 };
 
 const char *usb_strings[] =

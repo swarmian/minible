@@ -35,9 +35,9 @@
 /*- Definitions -------------------------------------------------------------*/
 enum
 {
-  USB_HID_DESCRIPTOR          = 0x21,
-  USB_HID_REPORT_DESCRIPTOR   = 0x22,
-  USB_HID_PHYSICAL_DESCRIPTOR = 0x23,
+  USB_HID_DESCRIPTOR             = 0x21,
+  USB_HID_REPORT_DESCRIPTOR      = 0x22,
+  USB_HID_PHYSICAL_DESCRIPTOR    = 0x23,
 };
 
 enum
@@ -88,7 +88,7 @@ typedef struct PACK
 extern usb_device_descriptor_t usb_device_descriptor;
 extern usb_configuration_hierarchy_t usb_configuration_hierarchy;
 extern uint8_t usb_hid_report_descriptor[28];
-extern uint8_t ctap_hid_report_descriptor[34];
+extern uint8_t usb_hid_ctap_report_descriptor[34];
 extern usb_string_descriptor_zero_t usb_string_descriptor_zero;
 extern const char *usb_strings[];
 extern uint8_t usb_string_descriptor_buffer[64];

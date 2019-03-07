@@ -9,6 +9,7 @@
 #include "platform_defines.h"
 #include "hid_keyboard_app.h"
 #include "comms_hid_msgs.h"
+//#include "ctaphid.h"
 #include "comms_main_mcu.h"
 #include "logic_battery.h"
 #include "driver_timer.h"
