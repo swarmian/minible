@@ -7,7 +7,7 @@
 #ifndef _CTAPHID_H_H
 #define _CTAPHID_H_H
 
-#include "device.h"
+//#include "device.h"
 #include "ctap_errors.h"
 
 #define TYPE_INIT               0x80
@@ -41,6 +41,7 @@
 #define CTAPHID_STATUS_PROCESSING   1
 #define CTAPHID_STATUS_UPNEEDED     2
 
+#define HID_MESSAGE_SIZE            64
 #define CTAPHID_INIT_PAYLOAD_SIZE  (HID_MESSAGE_SIZE-7)
 #define CTAPHID_CONT_PAYLOAD_SIZE  (HID_MESSAGE_SIZE-5)
 

@@ -7,7 +7,7 @@
 #ifndef _CTAP_H
 #define _CTAP_H
 
-#include "cbor.h"
+//#include "cbor.h"
 
 #define CTAP_MAKE_CREDENTIAL        0x01
 #define CTAP_GET_ASSERTION          0x02
@@ -181,28 +181,6 @@ struct rpId
     uint8_t name[RP_NAME_LIMIT];
 };
 
-typedef struct
-{
-    uint32_t paramsParsed;
-    uint8_t clientDataHash[CLIENT_DATA_HASH_SIZE];
-    struct rpId rp;
-    CTAP_userEntity user;
-
-    uint8_t publicKeyCredentialType;
-    int32_t COSEAlgorithmIdentifier;
-
-    CborValue excludeList;
-    size_t excludeListSize;
-
-    uint8_t rk;
-    uint8_t uv;
-    uint8_t up;
-
-    uint8_t pinAuth[16];
-    uint8_t pinAuthPresent;
-    int pinProtocol;
-
-} CTAP_makeCredential;
 
 typedef struct
 {
@@ -293,7 +271,7 @@ uint16_t ctap_key_len(uint8_t index);
 // See error codes in storage.h
 int8_t ctap_store_key(uint8_t index, uint8_t * key, uint16_t len);
 int8_t ctap_load_key(uint8_t index, uint8_t * key);
-uint16_t ctap_key_len(uint8_t index);
+//uint16_t ctap_key_len(uint8_t index);
 
 #define PIN_TOKEN_SIZE      16
 extern uint8_t PIN_TOKEN[PIN_TOKEN_SIZE];
