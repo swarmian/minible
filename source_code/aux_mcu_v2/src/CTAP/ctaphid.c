@@ -62,6 +62,8 @@ struct CID
 
 static int state;
 static struct CID CIDS[10];
+static volatile uint32_t ctap_packet[16];
+
 #define CID_MAX (sizeof(CIDS)/sizeof(struct CID))
 
 static uint64_t active_cid_timestamp;
@@ -288,7 +290,8 @@ static void ctaphid_write(CTAPHID_WRITE_BUFFER * wb, void * _data, int len)
         {
             memset(wb->buf + wb->offset, 0, HID_MESSAGE_SIZE - wb->offset);
             //ctaphid_write_block(wb->buf);
-            comms_usb_send_ctap_hid_packet(wb->buf, 0x00, 64);
+            memcpy((void*)ctap_packet, wb->buf, 64);
+            comms_usb_send_ctap_hid_packet(ctap_packet, 0x01, 64);
         }
         return;
     }
