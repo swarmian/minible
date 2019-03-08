@@ -617,10 +617,6 @@
       <Value>../src/BLE</Value>
       <Value>../src/LOGIC</Value>
       <Value>../src/CTAP</Value>
-      <Value>../src/CBOR</Value>
-      <Value>../src/CRYPTO</Value>
-      <Value>../src/CRYPTO/MICROECC</Value>
-      <Value>../src/CRYPTO/AES</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize (-O1)</armgcc.compiler.optimization.level>
