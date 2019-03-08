@@ -16,10 +16,8 @@
 /* USB comms buffers */
 static __attribute__((aligned(4))) hid_packet_t raw_hid_recv_buffer;
 static __attribute__((aligned(4))) hid_packet_t raw_hid_send_buffer;
-//static __attribute__((aligned(4))) hid_packet_t ctap_hid_recv_buffer;
-//static __attribute__((aligned(4))) hid_packet_t ctap_hid_send_buffer;
 
-uint8_t hidmsg[64];
+uint8_t ctap_hid_msg[64];
 
 /* Future message to be sent to MCU */
 aux_mcu_message_t comms_usb_temp_mcu_message_to_send;
@@ -101,11 +99,11 @@ void comms_usb_arm_packet_receive(void)
 */
 void comms_usb_arm_ctap_packet_receive(void)
 {
-    usb_recv(USB_CTAPHID_TX_ENDPOINT, hidmsg,64);//(uint8_t*)&ctap_hid_recv_buffer, sizeof(ctap_hid_recv_buffer));
-    ctaphid_handle_packet(hidmsg);
+    usb_recv(USB_CTAPHID_TX_ENDPOINT, ctap_hid_msg,64);//(uint8_t*)&ctap_hid_recv_buffer, sizeof(ctap_hid_recv_buffer));
+    ctaphid_handle_packet(ctap_hid_msg);
 }
 
-/*! \fn     comms_usb_send_raw_hid_packet(hid_packet_t* packet, BOOL wait_send, uint16_t payload_size)
+/*! \fn     comms_usb_send_ctap_hid_packet(hid_packet_t* packet, BOOL wait_send, uint16_t payload_size)
 *   \brief  send raw hid packet
 *   \param  packet          Packet to send (must be 4 bytes aligned!)
 *   \param  wait_send       Set to wait for end of packet transmission
@@ -126,10 +124,6 @@ void comms_usb_send_ctap_hid_packet(uint8_t* packet, BOOL wait_send, uint16_t pa
     }
     
     /* Send packet */
-    //packet[0] = 0xffffffff;
-    //packet[1] = 0xff;
-    //packet[2] = 0xff;
-    //packet[3] = 0xff;
     usb_send(USB_CTAPHID_RX_ENDPOINT, (uint8_t*)packet, payload_size);
     
     /* If asked, wait */
