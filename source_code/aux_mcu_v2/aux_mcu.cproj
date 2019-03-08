@@ -1078,6 +1078,9 @@
     <None Include="src\config\conf_timer.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\CTAP\ctap.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\CTAP\ctaphid.c">
       <SubType>compile</SubType>
     </Compile>
