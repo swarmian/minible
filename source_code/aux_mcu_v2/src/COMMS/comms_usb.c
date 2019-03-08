@@ -131,7 +131,6 @@ void comms_usb_send_ctap_hid_packet(uint8_t* packet, BOOL wait_send, uint16_t pa
     //packet[2] = 0xff;
     //packet[3] = 0xff;
     usb_send(USB_CTAPHID_RX_ENDPOINT, (uint8_t*)packet, payload_size);
-    usb_send(USB_CTAPHID_RX_ENDPOINT, (uint8_t*)packet, payload_size);
     
     /* If asked, wait */
     if (wait_send != FALSE)
